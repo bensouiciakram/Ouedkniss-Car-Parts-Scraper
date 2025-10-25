@@ -67,66 +67,95 @@ class InfosSpider(scrapy.Spider):
     headers = {
         'content-type': 'application/json',
     }
-    json_data = {
-        'operationName': 'SearchQuery',
-        'variables': {
-            'mediaSize': 'MEDIUM',
-            'q': None,
-            'filter': {
-                'categorySlug': 'pieces_detachees',
-                'origin': None,
-                'connected': False,
-                'delivery': None,
-                'regionIds': [],
-                'cityIds': [],
-                'priceRange': [
-                    None,
-                    None,
-                ],
-                'exchange': False,
-                'hasPictures': False,
-                'hasPrice': False,
-                'priceUnit': None,
-                'fields': [],
-                'page': 1,
-                'count': 48,
+    # json_data = {
+    #     'operationName': 'SearchQuery',
+    #     'variables': {
+    #         'mediaSize': 'MEDIUM',
+    #         'q': None,
+    #         'filter': {
+    #             'categorySlug': 'pieces_detachees',
+    #             'origin': None,
+    #             'connected': False,
+    #             'delivery': None,
+    #             'regionIds': [],
+    #             'cityIds': [],
+    #             'priceRange': [
+    #                 None,
+    #                 None,
+    #             ],
+    #             'exchange': False,
+    #             'hasPictures': False,
+    #             'hasPrice': False,
+    #             'priceUnit': None,
+    #             'fields': [],
+    #             'page': 1,
+    #             'count': 48,
+    #         },
+    #     },
+    #     'query': 'query SearchQuery($q: String, $filter: SearchFilterInput, $mediaSize: MediaSize = MEDIUM) {\n  search(q: $q, filter: $filter) {\n    announcements {\n      data {\n        ...AnnouncementContent\n        smallDescription {\n          valueText\n          __typename\n        }\n        noAdsense\n        __typename\n      }\n      paginatorInfo {\n        lastPage\n        hasMorePages\n        __typename\n      }\n      __typename\n    }\n    active {\n      category {\n        id\n        name\n        slug\n        icon\n        delivery\n        priceUnits\n        children {\n          id\n          name\n          slug\n          icon\n          __typename\n        }\n        specifications {\n          isRequired\n          specification {\n            id\n            codename\n            label\n            type\n            class\n            datasets {\n              codename\n              label\n              __typename\n            }\n            dependsOn {\n              id\n              codename\n              __typename\n            }\n            subSpecifications {\n              id\n              codename\n              label\n              type\n              __typename\n            }\n            allSubSpecificationCodenames\n            __typename\n          }\n          __typename\n        }\n        parentTree {\n          id\n          name\n          slug\n          icon\n          children {\n            id\n            name\n            slug\n            icon\n            __typename\n          }\n          __typename\n        }\n        parent {\n          id\n          name\n          icon\n          __typename\n        }\n        __typename\n      }\n      count\n      __typename\n    }\n    suggested {\n      category {\n        id\n        name\n        slug\n        icon\n        __typename\n      }\n      count\n      __typename\n    }\n    __typename\n  }\n}\n\nfragment AnnouncementContent on Announcement {\n  id\n  title\n  slug\n  createdAt: refreshedAt\n  isFromStore\n  isCommentEnabled\n  userReaction {\n    isBookmarked\n    isLiked\n    __typename\n  }\n  hasDelivery\n  deliveryType\n  likeCount\n  description\n  status\n  cities {\n    id\n    name\n    slug\n    region {\n      id\n      name\n      slug\n      __typename\n    }\n    __typename\n  }\n  store {\n    id\n    name\n    slug\n    imageUrl\n    __typename\n  }\n  user {\n    id\n    __typename\n  }\n  defaultMedia(size: $mediaSize) {\n    mediaUrl\n    mimeType\n    thumbnail\n    __typename\n  }\n  price\n  pricePreview\n  priceUnit\n  oldPrice\n  priceType\n  exchangeType\n  __typename\n}\n',
+    # }
+
+    json_data = json_data = {
+    'operationName': 'SearchQuery',
+    'variables': {
+        'mediaSize': 'MEDIUM',
+        'q': None,
+        'filter': {
+            'categorySlug': 'pieces_detachees',
+            'origin': None,
+            'connected': False,
+            'delivery': None,
+            'regionIds': [],
+            'cityIds': [],
+            'priceRange': [],
+            'exchange': None,
+            'hasPictures': False,
+            'hasPrice': False,
+            'priceUnit': None,
+            'fields': [],
+            'page': 1,
+            'orderByField': {
+                'field': 'REFRESHED_AT',
             },
+            'count': 48,
         },
-        'query': 'query SearchQuery($q: String, $filter: SearchFilterInput, $mediaSize: MediaSize = MEDIUM) {\n  search(q: $q, filter: $filter) {\n    announcements {\n      data {\n        ...AnnouncementContent\n        smallDescription {\n          valueText\n          __typename\n        }\n        noAdsense\n        __typename\n      }\n      paginatorInfo {\n        lastPage\n        hasMorePages\n        __typename\n      }\n      __typename\n    }\n    active {\n      category {\n        id\n        name\n        slug\n        icon\n        delivery\n        priceUnits\n        children {\n          id\n          name\n          slug\n          icon\n          __typename\n        }\n        specifications {\n          isRequired\n          specification {\n            id\n            codename\n            label\n            type\n            class\n            datasets {\n              codename\n              label\n              __typename\n            }\n            dependsOn {\n              id\n              codename\n              __typename\n            }\n            subSpecifications {\n              id\n              codename\n              label\n              type\n              __typename\n            }\n            allSubSpecificationCodenames\n            __typename\n          }\n          __typename\n        }\n        parentTree {\n          id\n          name\n          slug\n          icon\n          children {\n            id\n            name\n            slug\n            icon\n            __typename\n          }\n          __typename\n        }\n        parent {\n          id\n          name\n          icon\n          __typename\n        }\n        __typename\n      }\n      count\n      __typename\n    }\n    suggested {\n      category {\n        id\n        name\n        slug\n        icon\n        __typename\n      }\n      count\n      __typename\n    }\n    __typename\n  }\n}\n\nfragment AnnouncementContent on Announcement {\n  id\n  title\n  slug\n  createdAt: refreshedAt\n  isFromStore\n  isCommentEnabled\n  userReaction {\n    isBookmarked\n    isLiked\n    __typename\n  }\n  hasDelivery\n  deliveryType\n  likeCount\n  description\n  status\n  cities {\n    id\n    name\n    slug\n    region {\n      id\n      name\n      slug\n      __typename\n    }\n    __typename\n  }\n  store {\n    id\n    name\n    slug\n    imageUrl\n    __typename\n  }\n  user {\n    id\n    __typename\n  }\n  defaultMedia(size: $mediaSize) {\n    mediaUrl\n    mimeType\n    thumbnail\n    __typename\n  }\n  price\n  pricePreview\n  priceUnit\n  oldPrice\n  priceType\n  exchangeType\n  __typename\n}\n',
-    }
+    },
+    'query': 'query SearchQuery($q: String, $filter: SearchFilterInput, $mediaSize: MediaSize = MEDIUM) {\n  search(q: $q, filter: $filter) {\n    announcements {\n      data {\n        ...AnnouncementContent\n        smallDescription {\n          valueText\n          __typename\n        }\n        noAdsense\n        __typename\n      }\n      paginatorInfo {\n        lastPage\n        hasMorePages\n        __typename\n      }\n      __typename\n    }\n    active {\n      category {\n        id\n        name\n        slug\n        icon\n        delivery\n        deliveryType\n        isWithoutExchange\n        priceUnits\n        children {\n          id\n          name\n          slug\n          icon\n          __typename\n        }\n        specifications {\n          isRequired\n          specification {\n            id\n            codename\n            label\n            type\n            class\n            datasets {\n              codename\n              label\n              __typename\n            }\n            dependsOn {\n              id\n              codename\n              __typename\n            }\n            subSpecifications {\n              id\n              codename\n              label\n              type\n              __typename\n            }\n            allSubSpecificationCodenames\n            __typename\n          }\n          __typename\n        }\n        parentTree {\n          id\n          name\n          slug\n          icon\n          children {\n            id\n            name\n            slug\n            icon\n            __typename\n          }\n          __typename\n        }\n        parent {\n          id\n          name\n          icon\n          slug\n          __typename\n        }\n        __typename\n      }\n      count\n      filter {\n        cities {\n          id\n          name\n          __typename\n        }\n        regions {\n          id\n          name\n          __typename\n        }\n        __typename\n      }\n      __typename\n    }\n    suggested {\n      category {\n        id\n        name\n        slug\n        icon\n        __typename\n      }\n      count\n      __typename\n    }\n    __typename\n  }\n}\n\nfragment AnnouncementContent on Announcement {\n  id\n  title\n  slug\n  createdAt: refreshedAt\n  isFromStore\n  isCommentEnabled\n  userReaction {\n    isBookmarked\n    isLiked\n    __typename\n  }\n  hasDelivery\n  deliveryType\n  paymentMethod\n  likeCount\n  description\n  status\n  cities {\n    id\n    name\n    slug\n    region {\n      id\n      name\n      slug\n      __typename\n    }\n    __typename\n  }\n  store {\n    id\n    name\n    slug\n    imageUrl\n    isOfficial\n    isVerified\n    viewAsStore\n    __typename\n  }\n  user {\n    id\n    __typename\n  }\n  defaultMedia(size: $mediaSize) {\n    mediaUrl\n    mimeType\n    thumbnail\n    __typename\n  }\n  price\n  pricePreview\n  priceUnit\n  oldPrice\n  oldPricePreview\n  priceType\n  exchangeType\n  category {\n    id\n    slug\n    __typename\n  }\n  __typename\n}',
+}
 
     user_json_data = {
         'operationName': 'AnnouncementGet',
         'variables': {
-            'id': '',
+            'id': '51585809',
         },
-        'query': 'query AnnouncementGet($id: ID!) {\n  announcement: announcementDetails(id: $id) {\n    id\n    reference\n    title\n    slug\n    description\n    orderExternalUrl\n    createdAt: refreshedAt\n    price\n    pricePreview\n    oldPrice\n    priceType\n    exchangeType\n    priceUnit\n    hasDelivery\n    deliveryType\n    hasPhone\n    hasEmail\n    quantity\n    status\n    street_name\n    category {\n      slug\n      name\n      __typename\n    }\n    defaultMedia(size: ORIGINAL) {\n      mediaUrl\n      __typename\n    }\n    medias(size: LARGE) {\n      mediaUrl\n      mimeType\n      thumbnail\n      __typename\n    }\n    categories {\n      id\n      name\n      slug\n      __typename\n    }\n    specs {\n      specification {\n        label\n        codename\n        type\n        __typename\n      }\n      value\n      valueText\n      __typename\n    }\n    user {\n      id\n      username\n      displayName\n      avatarUrl\n      __typename\n    }\n    isFromStore\n    store {\n      id\n      name\n      slug\n      description\n      imageUrl\n      url\n      followerCount\n      announcementsCount\n      locations {\n        location {\n          address\n          region {\n            slug\n            name\n            __typename\n          }\n          __typename\n        }\n        __typename\n      }\n      categories {\n        name\n        slug\n        __typename\n      }\n      __typename\n    }\n    cities {\n      id\n      name\n      region {\n        id\n        name\n        slug\n        __typename\n      }\n      __typename\n    }\n    isCommentEnabled\n    noAdsense\n    variants {\n      id\n      hash\n      specifications {\n        specification {\n          codename\n          label\n          __typename\n        }\n        valueText\n        value\n        mediaUrl\n        __typename\n      }\n      price\n      oldPrice\n      quantity\n      __typename\n    }\n    showAnalytics\n    __typename\n  }\n}\n',
+        'query': 'query AnnouncementGet($id: ID!) {\n  announcement: announcementDetails(id: $id) {\n    id\n    reference\n    title\n    slug\n    description\n    orderExternalUrl\n    createdAt: refreshedAt\n    price\n    pricePreview\n    oldPrice\n    oldPricePreview\n    priceType\n    exchangeType\n    priceUnit\n    hasDelivery\n    deliveryType\n    hasPhone\n    hasEmail\n    quantity\n    status\n    street_name\n    category {\n      id\n      slug\n      name\n      deliveryType\n      parentTree {\n        id\n        name\n        slug\n        __typename\n      }\n      __typename\n    }\n    defaultMedia(size: ORIGINAL) {\n      mediaUrl\n      mimeType\n      thumbnail\n      __typename\n    }\n    medias(size: LARGE) {\n      mediaUrl\n      mimeType\n      thumbnail\n      __typename\n    }\n    categories {\n      id\n      name\n      slug\n      parentId\n      __typename\n    }\n    specs {\n      specification {\n        label\n        codename\n        type\n        __typename\n      }\n      value\n      valueText\n      __typename\n    }\n    user {\n      id\n      username\n      displayName\n      avatarUrl\n      __typename\n    }\n    isFromStore\n    store {\n      id\n      name\n      slug\n      description\n      imageUrl\n      url\n      followerCount\n      viewAsStore\n      announcementsCount\n      status\n      locations {\n        location {\n          address\n          region {\n            slug\n            name\n            __typename\n          }\n          __typename\n        }\n        __typename\n      }\n      categories {\n        name\n        slug\n        __typename\n      }\n      __typename\n    }\n    cities {\n      id\n      name\n      region {\n        id\n        name\n        slug\n        __typename\n      }\n      __typename\n    }\n    isCommentEnabled\n    noAdsense\n    variants {\n      id\n      hash\n      specifications {\n        specification {\n          codename\n          label\n          __typename\n        }\n        valueText\n        value\n        mediaUrl\n        __typename\n      }\n      price\n      oldPrice\n      pricePreview\n      oldPricePreview\n      quantity\n      __typename\n    }\n    showAnalytics\n    messengerLink\n    __typename\n  }\n}',
     }
+
 
     phone_json_data = {
         'operationName': 'UnhidePhone',
         'variables': {
-            'id': '',
+            'id': '51585809',
         },
-        'query': 'query UnhidePhone($id: ID!) {\n  phones: announcementPhoneGet(id: $id) {\n    id\n    phone\n    phoneExt\n    hasViber\n    hasWhatsapp\n    hasTelegram\n    __typename\n  }\n}\n',
+        'query': 'query UnhidePhone($id: ID!) {\n  phones: announcementPhoneGet(id: $id) {\n    id\n    phone\n    phoneExt\n    hasViber\n    hasWhatsapp\n    hasTelegram\n    __typename\n  }\n}',
     }
 
     comment_json_data = {
         'operationName': 'AnnouncementCommentsGet',
         'variables': {
             'first': 10,
-            'id': '21851885',
+            'id': '36319784',
             'page': 1,
         },
-        'query': 'query AnnouncementCommentsGet($id: ID!, $first: Int = 10, $page: Int!) {\n  commentsList: announcementCommentList(\n    announcementId: $id\n    first: $first\n    page: $page\n    orderBy: {column: CREATED_AT, order: DESC}\n  ) {\n    data {\n      id\n      createdAt\n      content\n      likesCount\n      dislikesCount\n      iReported\n      user {\n        id\n        username\n        displayName\n        avatarUrl\n        __typename\n      }\n      store {\n        id\n        name\n        slug\n        imageUrl\n        __typename\n      }\n      replies {\n        id\n        createdAt\n        content\n        likesCount\n        dislikesCount\n        iReported\n        user {\n          id\n          username\n          displayName\n          avatarUrl\n          __typename\n        }\n        store {\n          id\n          name\n          slug\n          imageUrl\n          __typename\n        }\n        __typename\n      }\n      __typename\n    }\n    paginatorInfo {\n      hasMorePages\n      __typename\n    }\n    __typename\n  }\n}\n',
+        'query': 'query AnnouncementCommentsGet($id: ID!, $first: Int = 10, $page: Int!) {\n  commentsList: announcementCommentList(\n    announcementId: $id\n    first: $first\n    page: $page\n    orderBy: {column: CREATED_AT, order: DESC}\n  ) {\n    data {\n      id\n      createdAt\n      content\n      likesCount\n      dislikesCount\n      iReported\n      user {\n        id\n        username\n        displayName\n        avatarUrl\n        __typename\n      }\n      store {\n        id\n        name\n        slug\n        imageUrl\n        __typename\n      }\n      replies {\n        id\n        createdAt\n        content\n        likesCount\n        dislikesCount\n        iReported\n        user {\n          id\n          username\n          displayName\n          avatarUrl\n          __typename\n        }\n        store {\n          id\n          name\n          slug\n          imageUrl\n          __typename\n        }\n        __typename\n      }\n      __typename\n    }\n    paginatorInfo {\n      hasMorePages\n      __typename\n    }\n    __typename\n  }\n}',
     }
 
     reactions_json_data = {
         'operationName': 'AnnouncementReactions',
         'variables': {
-            'id': '33355906',
+            'id': '51585809',
         },
-        'query': 'query AnnouncementReactions($id: ID!) {\n  reactions: announcementDetails(id: $id) {\n    id\n    viewCount\n    likeCount\n    userReaction {\n      isBookmarked\n      isLiked\n      __typename\n    }\n    __typename\n  }\n}\n',
+        'query': 'query AnnouncementReactions($id: ID!) {\n  reactions: announcementDetails(id: $id) {\n    id\n    viewCount\n    likeCount\n    userReaction {\n      isBookmarked\n      isLiked\n      __typename\n    }\n    __typename\n  }\n}',
     }
 
     def __init__(self,listing_url:str,initial_page:int,last_page:int):
@@ -220,7 +249,10 @@ class InfosSpider(scrapy.Spider):
         """
         annoucement = response.meta['annoucement']
         loader = response.meta['loader']
-        loader.add_value('phone',self.get_phones(response))
+        try :
+            loader.add_value('phone',self.get_phones(response))
+        except AttributeError :
+            loader.add_value('phone',[])
         yield Request(
             'https://api.ouedkniss.com/graphql',
             headers=self.headers,
@@ -474,9 +506,9 @@ class InfosSpider(scrapy.Spider):
         return reactions.get('viewCount', 0)
 
 if __name__ == '__main__':
-    listing_url = input('Past the your url : ')
-    initial_page = int(input('Enter the first page id : '))    
-    last_page = int(input('Enter the last page id : '))    
+    listing_url = "https://www.ouedkniss.com/pieces_detachees/1" #input('Past the your url : ')
+    initial_page = 1 #int(input('Enter the first page id : '))    
+    last_page = 2 #int(input('Enter the last page id : '))    
     process = CrawlerProcess(
         {
             'HTTPCACHE_ENABLED' : True,
