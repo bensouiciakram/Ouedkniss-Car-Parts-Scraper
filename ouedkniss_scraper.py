@@ -512,9 +512,15 @@ if __name__ == '__main__':
     process = CrawlerProcess(
         {
             'HTTPCACHE_ENABLED' : True,
-            'FEED_URI':'output.csv',
-            'FEED_FORMAT':'csv',
-            #'COOKIES_ENABLED ':False,
+            'FEEDS':{
+                'ouedkniss_cars.json':{
+                    'format': 'json',    
+                    'overwrite': True,   
+                    'encoding': 'utf8',  
+                    'store_empty': False,
+                    'indent': 4
+                }
+            },
             'HTTPERROR_ALLOWED_CODES':[404]
         }
     )
