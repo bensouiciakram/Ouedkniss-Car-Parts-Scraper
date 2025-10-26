@@ -1,82 +1,80 @@
 # Ouedkniss Car Parts Scraper
 
-A web scraping tool designed to extract car parts information from Ouedkniss, an Algerian automotive marketplace.
+A small, standalone Scrapy-based scraper that extracts car parts ("pieces_detachees") announcements from Ouedkniss via their GraphQL API and saves the results to a JSON file (`ouedkniss_cars.json`).
 
-## Features
+## Key points
 
-- **Automated Data Extraction**: Scrapes car parts listings from Ouedkniss
-- **Comprehensive Data Collection**: Extracts product details, prices, descriptions, and contact information
-- **Error Handling**: Robust error handling and retry mechanisms
-- **Data Export**: Exports scraped data in structured formats
-- **Type Safety**: Full type annotations for better code maintainability
+- The project is a single-file Scrapy spider (`ouedkniss_scraper.py`) that uses `CrawlerProcess` to run a spider programmatically.
+- It queries Ouedkniss' GraphQL endpoints to fetch listing pages, announcement details, phone numbers, comments and reaction/view counts.
+- Output: `ouedkniss_cars.json` (JSON lines / pretty-printed JSON as configured in the script).
 
 ## Requirements
 
-- Python 3.7+
-- Selenium WebDriver
-- Chrome browser
-- Required Python packages (see requirements.txt)
+- Python 3.8+ (3.7 may work but 3.8+ is recommended)
+- pip
+- The Python packages listed in `requirements.txt` (at minimum `scrapy`).
+
+If you see import errors for `itemloaders`, install it as well:
+
+```cmd
+pip install itemloaders
+```
 
 ## Installation
 
-1. Clone or download this project
-2. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
-3. Download ChromeDriver and ensure it's in your PATH
+1. Clone or download this repository.
+2. (Recommended) Create and activate a virtual environment.
+3. Install dependencies:
 
-## Usage
+```cmd
+pip install -r requirements.txt
+```
 
-Run the main scraper:
-```bash
+## Usage (Windows cmd)
+
+Run the script directly with Python. The script prompts for three inputs: the listing URL, the first page number and the last page number.
+
+Example (in Command Prompt):
+
+```cmd
+cd "c:\Users\benso\Desktop\portfolio projects info & testing\ouedkniss scraper"
 python ouedkniss_scraper.py
+
+# When prompted, enter values such as:
+# Paste your URL : https://www.ouedkniss.com/pieces_detachees/1
+# Enter the first page id : 1
+# Enter the last page id : 3
 ```
 
-## Project Structure
+After the spider finishes, the output file `ouedkniss_cars.json` will be created/overwritten in the same folder.
+
+Notes:
+
+- The script currently uses interactive prompts to receive inputs. If you prefer automating runs, consider converting the script to accept CLI arguments or running it as a proper Scrapy project/spider.
+- The script enables HTTPCACHE in its `CrawlerProcess` settings and allows HTTP 404 responses (see settings inside `ouedkniss_scraper.py`).
+
+## Project structure
 
 ```
-Ouedkniss Car Parts Scraper/
-├── ouedkniss_scraper.py    # Main scraper script
-├── requirements.txt        # Python dependencies
-├── README.md              # This file
-└── .gitignore            # Git ignore rules
+ouedkniss_scraper.py    # Main Scrapy spider + runnable __main__ harness
+requirements.txt        # Python dependencies (contains `scrapy`)
+ouedkniss_cars.json     # Output file produced by the scraper (after running)
+README.md               # This file
 ```
 
-## Configuration
+## Troubleshooting
 
-The scraper can be configured by modifying the constants at the top of `ouedkniss_scraper.py`:
-- Search URLs
-- Output file paths
-- Scraping delays
-- Data extraction patterns
-
-## Output
-
-The scraper generates structured data files containing:
-- Product titles
-- Prices
-- Descriptions
-- Contact information
-- URLs
-- Timestamps
-
-## Error Handling
-
-The scraper includes comprehensive error handling for:
-- Network timeouts
-- Page loading failures
-- Element not found errors
-- Data extraction failures
+- If you get an import error for `scrapy` or other packages, double-check your virtual environment and re-run `pip install -r requirements.txt`.
+- If GraphQL responses or endpoints change on the site, the spider may need updates to the payloads and parsing logic.
 
 ## Contributing
 
-When contributing to this project:
-1. Follow the existing code style
-2. Add type annotations to new functions
-3. Include comprehensive docstrings
-4. Test your changes thoroughly
+Small patches or fixes are welcome. Suggested low-risk improvements:
+
+- Add CLI argument support (argparse) instead of interactive prompts.
+- Add a small unit or integration test that validates the payload builders.
+- Add logging configuration and a --limit flag for quick tests.
 
 ## License
 
-This project is for educational and research purposes only. 
+This repository is provided for educational purposes. See the project `LICENSE` (if added) for details.
