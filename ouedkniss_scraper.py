@@ -67,33 +67,6 @@ class InfosSpider(scrapy.Spider):
     headers = {
         'content-type': 'application/json',
     }
-    # json_data = {
-    #     'operationName': 'SearchQuery',
-    #     'variables': {
-    #         'mediaSize': 'MEDIUM',
-    #         'q': None,
-    #         'filter': {
-    #             'categorySlug': 'pieces_detachees',
-    #             'origin': None,
-    #             'connected': False,
-    #             'delivery': None,
-    #             'regionIds': [],
-    #             'cityIds': [],
-    #             'priceRange': [
-    #                 None,
-    #                 None,
-    #             ],
-    #             'exchange': False,
-    #             'hasPictures': False,
-    #             'hasPrice': False,
-    #             'priceUnit': None,
-    #             'fields': [],
-    #             'page': 1,
-    #             'count': 48,
-    #         },
-    #     },
-    #     'query': 'query SearchQuery($q: String, $filter: SearchFilterInput, $mediaSize: MediaSize = MEDIUM) {\n  search(q: $q, filter: $filter) {\n    announcements {\n      data {\n        ...AnnouncementContent\n        smallDescription {\n          valueText\n          __typename\n        }\n        noAdsense\n        __typename\n      }\n      paginatorInfo {\n        lastPage\n        hasMorePages\n        __typename\n      }\n      __typename\n    }\n    active {\n      category {\n        id\n        name\n        slug\n        icon\n        delivery\n        priceUnits\n        children {\n          id\n          name\n          slug\n          icon\n          __typename\n        }\n        specifications {\n          isRequired\n          specification {\n            id\n            codename\n            label\n            type\n            class\n            datasets {\n              codename\n              label\n              __typename\n            }\n            dependsOn {\n              id\n              codename\n              __typename\n            }\n            subSpecifications {\n              id\n              codename\n              label\n              type\n              __typename\n            }\n            allSubSpecificationCodenames\n            __typename\n          }\n          __typename\n        }\n        parentTree {\n          id\n          name\n          slug\n          icon\n          children {\n            id\n            name\n            slug\n            icon\n            __typename\n          }\n          __typename\n        }\n        parent {\n          id\n          name\n          icon\n          __typename\n        }\n        __typename\n      }\n      count\n      __typename\n    }\n    suggested {\n      category {\n        id\n        name\n        slug\n        icon\n        __typename\n      }\n      count\n      __typename\n    }\n    __typename\n  }\n}\n\nfragment AnnouncementContent on Announcement {\n  id\n  title\n  slug\n  createdAt: refreshedAt\n  isFromStore\n  isCommentEnabled\n  userReaction {\n    isBookmarked\n    isLiked\n    __typename\n  }\n  hasDelivery\n  deliveryType\n  likeCount\n  description\n  status\n  cities {\n    id\n    name\n    slug\n    region {\n      id\n      name\n      slug\n      __typename\n    }\n    __typename\n  }\n  store {\n    id\n    name\n    slug\n    imageUrl\n    __typename\n  }\n  user {\n    id\n    __typename\n  }\n  defaultMedia(size: $mediaSize) {\n    mediaUrl\n    mimeType\n    thumbnail\n    __typename\n  }\n  price\n  pricePreview\n  priceUnit\n  oldPrice\n  priceType\n  exchangeType\n  __typename\n}\n',
-    # }
 
     json_data = json_data = {
     'operationName': 'SearchQuery',
@@ -506,9 +479,9 @@ class InfosSpider(scrapy.Spider):
         return reactions.get('viewCount', 0)
 
 if __name__ == '__main__':
-    listing_url = "https://www.ouedkniss.com/pieces_detachees/1" #input('Past the your url : ')
-    initial_page = 1 #int(input('Enter the first page id : '))    
-    last_page = 2 #int(input('Enter the last page id : '))    
+    listing_url = input('Past the your url : ') #"https://www.ouedkniss.com/pieces_detachees/1" #
+    initial_page = int(input('Enter the first page id : '))    
+    last_page = int(input('Enter the last page id : '))    
     process = CrawlerProcess(
         {
             'HTTPCACHE_ENABLED' : True,
