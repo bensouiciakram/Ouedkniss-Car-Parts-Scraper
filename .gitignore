@@ -53,3 +53,4 @@ geckodriver.exe
 temp/
 tmp/
 *.tmp 
+.scrapy
